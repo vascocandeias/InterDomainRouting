@@ -5,7 +5,7 @@ class Node:
     counter = 0
 
     def __init__(self):
-       self.visited = False
+       self.cur_node = -1
        self.edges = []
        self.type = None
        self.hops = 0
@@ -16,12 +16,12 @@ class Node:
     def hasEdges(self):
         return self.edges != []
 
-    def process(self, lists, visited):
-        self.visited = not self.visited
+    def process(self, lists, cur_node):
+        self.cur_node = not self.cur_node
         self.type = None
         for edge in self.edges:
             node = edge.head
-            if node.visited == visited and node.type is None: 
+            if node.cur_node < cur_node and node.type is None: 
                 node.hops = self.hops + 1
                 node.type = 0
                 lists[0].append(node)
@@ -29,7 +29,7 @@ class Node:
         self.hops = 0
 
 
-    def commercialDijkstra(self, nlists, visited):
+    def commercialDijkstra(self, nlists, cur_node):
         lists = [deque()] * nlists
         lists[0].append(self)
         for i in range(nlists):
@@ -37,11 +37,11 @@ class Node:
             while fifo:
                 node = fifo.popleft()
                 # breakpoint()
-                if node.visited == visited:
-                    node.process(lists, visited)
+                if node.cur_node < cur_node:
+                    node.process(lists, cur_node)
                     
 
-    def dijkstra(self, nlists, visited):
+    def dijkstra(self, nlists, cur_node):
         lists = [deque() for i in range(nlists)]
         lists[nlists-1].append(self)
         for i in range(nlists-1, -1, -1):
@@ -49,11 +49,12 @@ class Node:
             while fifo:
                 node = fifo.popleft()
                 # breakpoint()
-                if node.visited == visited:
-                    node.process2(lists, visited, i+1)
+                if node.cur_node < cur_node:
+                    # breakpoint()
+                    node.process2(lists, cur_node, i+1)
                                         
-    def process2(self, lists, visited, list_num):
-        self.visited = not self.visited
+    def process2(self, lists, cur_node, list_num):
+        self.cur_node = cur_node
         r = 0
         if self.type == 3:
             g.Graph.clients += 1
@@ -68,7 +69,8 @@ class Node:
         self.type = None
         for edge in self.edges:
             node = edge.head
-            if node.visited == visited:
+            if node.cur_node < cur_node:
+                # breakpoint()
                 if list_num == 3:
                     if (node.type is None or node.type < edge.relationship) and edge.relationship != 1:
                         # breakpoint()
