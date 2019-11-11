@@ -1,18 +1,36 @@
 from collections import deque
 from Node import *
+import time
 
 class Graph:
+
+    MAX_LENGTH = 2**16
+    clients = 0
+    providers = 0
+    peers = 0
+
     def __init__(self):
-        self.data = [None] * 2**16
+        # self.data = [Node() for i in range(Graph.MAX_LENGTH)] 
+        self.data = [None] * Graph.MAX_LENGTH
+        self.total_nodes = 0
+
+    def reset_stats(self):
+        Graph.clients = Graph.providers = Graph.peers = 0
     
-    def insertNode(self, tail, head, type):
+    def insertEdge(self, tail, head, relation):
+
         tail = int(tail)
+        head = int(head)
+
         if self.data[tail] is None:
-            self.data[tail].list = []
-            self.data[tail].visited = False
-        try:
-            headNode = self.data[int(head)]
-        self.data[tail].list.append(Node(headNode, type))
+            self.total_nodes += 1
+            self.data[tail] = Node()
+        if self.data[head] is None:
+            self.total_nodes += 1
+            self.data[head] = Node()
+
+        self.data[tail].id = tail
+        self.data[tail].edges.append(type('',(object,),{'relationship':int(relation),'head':self.data[head], 'headid':head})())
 
     def initGraph(self, filename):
         """Opens the input file, reads it and creates the tree based on the information contained"""
@@ -24,6 +42,27 @@ class Graph:
             # if not checkPrefix(x.split()[0]):
             #     f.close()
             #     raise Exception
-            self.insertNode(*x.split())
+            self.insertEdge(*x.split())
         f.close()
 
+    def Dijkstra(self):
+        i = 0
+        state = False
+        t0 = time.time()
+        for node in self.data:
+            if node is not None:
+                # print(i)
+                node.dijkstra(3, state)
+                # print()
+                state = not state
+            if i % 500 == 0:
+                print(i, round((time.time() - t0), 2))
+                t0 = time.time()
+            i += 1
+
+        print("Elapsed time:", time.time() - t0)       
+        print("Stats:")
+        total_connections = self.total_nodes*(self.total_nodes - 1)
+        print("Providers:", Graph.providers/total_connections)
+        print("Peers:", Graph.peers/total_connections)
+        print("Clients:", Graph.clients/total_connections)
