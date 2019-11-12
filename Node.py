@@ -32,19 +32,22 @@ class Node:
     def commercialDijkstra(self, nlists, cur_node):
         lists = [deque()] * nlists
         lists[0].append(self)
-        for i in range(nlists):
+        i = 0
+        while i < nlists:
             fifo = lists[i]
             while fifo:
                 node = fifo.popleft()
                 # breakpoint()
                 if node.cur_node < cur_node:
                     node.process(lists, cur_node)
+            i += 1
                     
 
     def dijkstra(self, nlists, cur_node):
         lists = [deque() for i in range(nlists)]
         lists[nlists-1].append(self)
-        for i in range(nlists-1, -1, -1):
+        i = 2
+        while i >= 0:
             fifo = lists[i]
             while fifo:
                 node = fifo.popleft()
@@ -52,6 +55,7 @@ class Node:
                 if node.cur_node < cur_node:
                     # breakpoint()
                     node.process2(lists, cur_node, i+1)
+            i -= 1
                                         
     def process2(self, lists, cur_node, list_num):
         self.cur_node = cur_node
