@@ -1,85 +1,88 @@
-class Node:
-    counter = 0
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
 
-    def __init__(self):
-       self.cur_node = -1
-       self.edges = []
-       self.type = None
-       self.hops = 0
-       self.id = 0
-       self.parent = -1
-       Node.counter += 1
+#include "fifo.h"
 
-    def hasEdges(self):
-        return self.edges != []
+int clients;
+int peers;
+int providers;
 
-    def process(self, lists, cur_node):
-        self.cur_node = not self.cur_node
-        self.type = None
-        for edge in self.edges:
-            node = edge.head
-            if node.cur_node < cur_node and node.type is None: 
-                node.hops = self.hops + 1
-                node.type = 0
-                lists[0].append(node)
-        
-        self.hops = 0
+typedef struct Node {
+    int cur_node;
+    fifo edges[3];
+    int type;
+    int hops;
+    int id;
+    int parent;
+} * node;
+
+int counter = 0;
+
+node new() {
+
+    node n = (node) malloc(sizeof(node));
+
+    n->cur_node = -1;
+    for(int i = 0; i < 3; i++) n->edges[i] = NULL;
+    n->type = 0;
+    n->hops = 0;
+    n->id = 0;
+    n->parent = -1;
+    
+    return n;
+}
+
+bool has_edges(node n){ return n? n->edges[0] != NULL && n->edges[1] != NULL && n->edges[2] != NULL : false; }
+
+void process(node n, fifo ** lists, int cur_node){
+
+    n->cur_node = cur_node;
+    // r = 0
+    if(n->type == 3)
+        clients += 1;
+        // r = "c"
+    else if(n->type == 2)
+        peers += 1;
+        // r = "p"
+    else if(n->type == 1)
+        providers += 1;
+        // r = "pv"
+    // print(n->id, r, n->parent)
+
+    n->type = 0;
+
+    for edge in n->edges:
+        node = edge.head
+        if node.cur_node < cur_node:
+            if list_num == 3:
+                if (node.type is None or node.type < edge.relationship) and edge.relationship != 1:
+                    node.parent = n->id
+                    node.hops = n->hops + 1
+                    node.type = edge.relationship
+                    lists[edge.relationship - 1].append(node)
+}
+
+// def process(n-> lists, cur_node):
+//     n->cur_node = not n->cur_node
+//     n->type = None
+//     for edge in n->edges:
+//         node = edge.head
+//         if node.cur_node < cur_node and node.type is None: 
+//             node.hops = n->hops + 1
+//             node.type = 0
+//             lists[0].append(node)
+    
+//     n->hops = 0
 
 
-    def commercialDijkstra(self, nlists, cur_node):
-        lists = [deque()] * nlists
-        lists[0].append(self)
-        for i in range(nlists):
-            fifo = lists[i]
-            while fifo:
-                node = fifo.popleft()
-                # breakpoint()
-                if node.cur_node < cur_node:
-                    node.process(lists, cur_node)
-                    
-
-    def dijkstra(self, nlists, cur_node):
-        lists = [deque() for i in range(nlists)]
-        lists[nlists-1].append(self)
-        for i in range(nlists-1, -1, -1):
-            fifo = lists[i]
-            while fifo:
-                node = fifo.popleft()
-                # breakpoint()
-                if node.cur_node < cur_node:
-                    # breakpoint()
-                    node.process2(lists, cur_node, i+1)
-                                        
-    def process2(self, lists, cur_node, list_num):
-        self.cur_node = cur_node
-        r = 0
-        if self.type == 3:
-            g.Graph.clients += 1
-            # r = "c"
-        elif self.type == 2:
-            g.Graph.peers += 1
-            # r = "p"
-        elif self.type == 1:
-            g.Graph.providers += 1
-            # r = "pv"
-        # print(self.id, r, self.parent)
-        self.type = None
-        for edge in self.edges:
-            node = edge.head
-            if node.cur_node < cur_node:
-                # breakpoint()
-                if list_num == 3:
-                    if (node.type is None or node.type < edge.relationship) and edge.relationship != 1:
-                        # breakpoint()
-                        node.parent = self.id
-                        node.hops = self.hops + 1
-                        node.type = edge.relationship
-                        lists[edge.relationship - 1].append(node)
-                # elif node.type is None and edge.relationship == 1:
-                #     node.parent = self.id
-                #     node.hops = self.hops + 1
-                #     node.type = edge.relationship
-                #     lists[edge.relationship- 1].append(node)
-
-        self.hops = 0
-
+// def commercialDijkstra(n-> nlists, cur_node):
+//     lists = [deque()] * nlists
+//     lists[0].append(n->
+//     for i in range(nlists):
+//         fifo = lists[i]
+//         while fifo:
+//             node = fifo.popleft()
+//             // breakpoint()
+//             if node.cur_node < cur_node:
+//                 node.process(lists, cur_node)
