@@ -99,6 +99,9 @@ void process(node n, Fifo * lists, int cur_node, int list_num) {
 void _dijkstra(node n, int cur_node) {
     Fifo lists[3], aux;
 
+    if(n == NULL)
+        return;
+
     for(int i = 0; i < 3; i++)
         lists[i] = NULL;
 
@@ -117,7 +120,7 @@ void _dijkstra(node n, int cur_node) {
 
 void dijkstra(Graph graph) {
 
-        _dijkstra(graph->data[1], 1);
+        _dijkstra(graph->data[8232], 8232);
 
         // clock_t t0 = clock();
         // node n;
