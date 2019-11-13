@@ -17,6 +17,7 @@
 #include "fifo.h"
 
 #define MAX_LENGTH 65536
+// #define MAX_LENGTH 20
 
 typedef struct Node * GraphNode;
 typedef struct Graph * Graph;
@@ -27,5 +28,7 @@ void delete_node(GraphNode);
 bool has_edges(GraphNode);
 void process(GraphNode, Fifo *, int, int);
 void delete_graph(Graph);
+void _dijkstra(GraphNode, int);
+void dijkstra(Graph);
 
 #endif

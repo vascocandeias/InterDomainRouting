@@ -29,11 +29,15 @@ Fifo append(Fifo list, Item data) {
 
     node n = new_node(data);
 
-    if(list == NULL) {
+    if(!list) {
         list = (Fifo) malloc(sizeof(struct Fifo));
         if(!list) exit(0);
+        list->head = NULL;
+    }
+    
+    if(!list->head)
         list->head = n;
-    } else
+    else
         list->tail->next = n;
 
     list->tail = n;

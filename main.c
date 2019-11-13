@@ -4,9 +4,9 @@
 #include "fifo.h"
 #include "graph.h"
 
-extern int clients;
-extern int peers;
-extern int providers;
+extern float clients;
+extern float peers;
+extern float providers;
 
 int main(int argc, char ** argv){
 
@@ -16,6 +16,7 @@ int main(int argc, char ** argv){
     }
 
     Graph graph = new_graph(argv[1]); 
+    dijkstra(graph);
     delete_graph(graph);
     return 0;
 }

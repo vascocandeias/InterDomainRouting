@@ -1,13 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <time.h>
 
 #include "fifo.h"
 #include "graph.h"
 
-int clients;
-int peers;
-int providers;
+float clients;
+float peers;
+float providers;
 int sum = 0;
 
 typedef struct Node {
@@ -72,7 +73,7 @@ void process(node n, Fifo * lists, int cur_node, int list_num) {
     else if(n->type == 1)
         providers += 1;
         // r = "pv"
-    // print(n->id, r, n->parent)
+    // printf(n->id, r, n->parent)
 
     n->type = 0;
     for(int i = 1; i < 4; i++){
@@ -86,13 +87,60 @@ void process(node n, Fifo * lists, int cur_node, int list_num) {
                         head->parent = n->id;
                         // head->hops = n->hops + 1;
                         head->type = i;
-                        append(lists[i - 1], head);
+                        lists[i - 1] = append(lists[i - 1], head);
                     }
                 }
             }
         }
     }
+    n->hops = 0;
 }
+
+void _dijkstra(node n, int cur_node) {
+    Fifo lists[3], aux;
+
+    for(int i = 0; i < 3; i++)
+        lists[i] = NULL;
+
+    lists[2] = append(lists[2], n);
+
+    for(int i = 2; i >= 0; i--) {
+        aux = lists[i];
+        for(node auxnode = pop(aux); auxnode != NULL; auxnode = pop(aux)){
+            if(auxnode->cur_node < cur_node)
+                process(auxnode, lists, cur_node, i + 1);}
+    }
+
+    for(int i = 0; i < 3; i++)
+        delete_fifo(lists[i]);
+}
+
+void dijkstra(Graph graph) {
+
+        _dijkstra(graph->data[1], 1);
+
+        // clock_t t0 = clock();
+        // node n;
+
+        // for(int i = 0; i < MAX_LENGTH; i++) {
+        //     n = graph->data[i];
+        //     if(n != NULL)
+        //         _dijkstra(n, i);
+        //     if(i % 500 == 0) {
+        //         printf("%d %f\n", i, (float) (clock() - t0) / CLOCKS_PER_SEC);
+        //         t0 = clock();
+        //     }
+        // }
+
+        // printf("Elapsed time: %f\n", (float) (clock() - t0) / CLOCKS_PER_SEC);
+        printf("\nStats:\n");
+        float total_connections = graph->total_nodes*(graph->total_nodes - 1);
+        providers = total_connections - peers - clients;
+        printf("Providers: %f\n", providers/total_connections*100);
+        printf("Peers: %f\n", peers/total_connections*100);
+        printf("Clients: %f\n", clients/total_connections*100);
+}
+
 
 Graph new_graph(char * filename) {
 
