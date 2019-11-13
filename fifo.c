@@ -13,7 +13,7 @@ struct Fifo {
     node tail;    
 };
 
-node new_node(Item data) {
+static node new_node(Item data) {
     
     node n = (node) malloc(sizeof(struct Node));
 
@@ -25,12 +25,12 @@ node new_node(Item data) {
     return n;
 }
 
-fifo append(fifo list, Item data) {
+Fifo append(Fifo list, Item data) {
 
     node n = new_node(data);
 
     if(list == NULL) {
-        list = (fifo) malloc(sizeof(struct Fifo));
+        list = (Fifo) malloc(sizeof(struct Fifo));
         if(!list) exit(0);
         list->head = n;
     } else
@@ -41,7 +41,7 @@ fifo append(fifo list, Item data) {
     return list;
 }
 
-Item pop(fifo list) {
+Item pop(Fifo list) {
 
     if(list == NULL || list->head == NULL)
         return NULL;
@@ -51,18 +51,18 @@ Item pop(fifo list) {
 
     list->head = head->next;
     free(head);
-
     return data;
 }
 
-void delete(fifo list){
-    for(Item aux = pop(list); aux != NULL; aux = pop(list))
-        free(aux);
+void delete_fifo(Fifo list){
 
-    free(list);
+    for(Item aux = pop(list); aux != NULL; aux = pop(list));
+
+    if(list)
+        free(list);
 }
 
-node get_head(fifo list) { return list? list->head : NULL; }
+node get_head(Fifo list) { return list? list->head : NULL; }
 
 Item get_data(node node) { return node? node->data : NULL; }
 
