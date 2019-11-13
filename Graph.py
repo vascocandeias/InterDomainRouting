@@ -46,21 +46,25 @@ class Graph:
         f.close()
 
     def Dijkstra(self):
-        i = 0
-        t0 = time.time()
-        for node in self.data:
-            if node is not None:
-                # print(i)
-                node.dijkstra(3, i)
-                # print()
-            if i % 500 == 0:
-                print(i, round((time.time() - t0), 2))
-                t0 = time.time()
-            i += 1
 
-        print("Elapsed time:", time.time() - t0)       
+        self.data[8232].dijkstra(3, 8232)
+
+        # i = 0
+        # t0 = time.time()
+        # for node in self.data:
+        #     if node is not None:
+        #         # print(i)
+        #         node.dijkstra(3, i)
+        #         # print()
+        #     if i % 500 == 0:
+        #         print(i, round((time.time() - t0), 2))
+        #         t0 = time.time()
+        #     i += 1
+
+        # print("Elapsed time:", time.time() - t0)       
         print("Stats:")
-        total_connections = self.total_nodes*(self.total_nodes - 1)
+        # total_connections = self.total_nodes*(self.total_nodes - 1)
+        total_connections = (self.total_nodes - 1)
         Graph.providers = total_connections - Graph.peers - Graph.clients
         print("Providers:", Graph.providers/total_connections*100)
         print("Peers:", Graph.peers/total_connections)
