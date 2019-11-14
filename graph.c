@@ -95,6 +95,8 @@ void process(node n, Fifo * lists, int cur_node, int list_num) {
                     // head->hops = n->hops + 1;
                     head->type = i;
                     lists[i - 1] = append(lists[i - 1], head);
+                    // printf("List %d: ", i-1);
+                    // printlist(lists[i-1]);
                 }
             }
         }
@@ -116,6 +118,8 @@ void _dijkstra(node n, int cur_node) {
     for(int i = 2; i >= 1; i--) {
         aux = lists[i];
         for(node auxnode = pop(aux); auxnode != NULL; auxnode = pop(aux)) {
+            printf("Pop %d: ", i);
+            printlist(aux);
             if(auxnode->cur_node < cur_node)
                 process(auxnode, lists, cur_node, i + 1);
         }
@@ -145,24 +149,27 @@ void dijkstra(Graph graph) {
                 continue;
 
             lists[2] = append(lists[2], n);
+            // printlist(lists[2]);
 
             for(int i = 2; i >= 1; i--) {
                 aux = lists[i];
                 for(node auxnode = pop(aux); auxnode != NULL; auxnode = pop(aux)) {
+                    // printf("Pop %d: ", i);
+                    // printlist(aux);
                     if(auxnode->cur_node < cur_node)
                         process(auxnode, lists, cur_node, i + 1);}
             }
 
-            // if(i % 500 == 0) {
-            //     // printf("%d %f\n", i, (float) (clock() - t0) / CLOCKS_PER_SEC);
-            //     // t0 = clock();        // printf("Elapsed time: %f\n", (float) (clock() - t0) / CLOCKS_PER_SEC);
-            //     // printf("%d\n", i);
-            //     // float total_connections = graph->total_nodes*(graph->total_nodes - 1);
-            //     // providers = total_connections - peers - clients;
-            //     // printf("Peers: %f\n", peers/total_connections*100);
-            //     // printf("Clients: %f\n", clients/total_connections*100);
-            //     // printf("Peers: %f\n", peers);
-            //     // printf("Clients: %f\n", clients);
+            // if(cur_node % 500 == 0) {
+            //     printf("%d %f\n", cur_node, (float) (clock() - t0) / CLOCKS_PER_SEC);
+            //     t0 = clock();        // printf("Elapsed time: %f\n", (float) (clock() - t0) / CLOCKS_PER_SEC);
+            //     printf("%d\n", cur_node);
+            //     float total_connections = graph->total_nodes*(graph->total_nodes - 1);
+            //     providers = total_connections - peers - clients;
+            //     printf("Peers: %f\n", peers/total_connections*100);
+            //     printf("Clients: %f\n", clients/total_connections*100);
+            //     printf("Peers: %f\n", peers);
+            //     printf("Clients: %f\n", clients);
             // }
         }
 

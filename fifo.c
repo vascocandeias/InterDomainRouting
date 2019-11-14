@@ -34,10 +34,21 @@ Fifo append(Fifo list, Item data) {
         list->tail = NULL;
     }
 
-    if(list->tail && list->tail->next) {
-        list->tail->next->data = data;
-        list->tail = list->tail->next;
-        return list;
+    // if(list->tail) {
+    //     printf("tail: %p\n", list->tail);
+    //     printf("tail->next: %p\n", list->tail->next);
+    // }
+
+    if(list->tail) {
+        if(!list->tail->data) {
+            list->tail->data = data;
+            return list;
+        }
+        if(list->tail->next) {
+            list->tail->next->data = data;
+            list->tail = list->tail->next;
+            return list;
+        }
     }
 
     node n = new_node(data);
@@ -49,12 +60,15 @@ Fifo append(Fifo list, Item data) {
  
     list->tail = n;
 
-    printf("%p\n", n);
+    // printf("%p\n", n);
 
     return list;
 }
 
 Item pop(Fifo list) {
+    // printf("Before\n");
+    // printf("tail: %p\n", list->tail);
+    // printf("head: %p\n", list->head);
 
     if(list == NULL || list->head == NULL)
         return NULL;
@@ -62,15 +76,27 @@ Item pop(Fifo list) {
     node head = list->head;
     Item data = head->data;
 
-    if(!list->head->next)
-        list->head = head;
-    else
-        list->head = head->next;
     head->data = NULL;
+
+    if(!list->head->next || !list->head->next->data)
+        return data;
+
+    // printf("DEBUG\n");
+    // printf("list->head: %p\n", list->head);
+    // printf("head->next: %p\n", head->next);
+    // printf("list->tail->next: %p\n", list->tail->next);
+    // printf("head: %p\n", head);
+
+    list->head = head->next;
     head->next = list->tail->next;
     list->tail->next = head;
-    list->tail = head;
+    
+    // if(list->tail == head) 
+    // list->tail = head;
     // free(head);
+    // printf("After\n");
+    // printf("tail: %p\n", list->tail);
+    // printf("head: %p\n", list->head);
     return data;
 }
 
@@ -93,9 +119,11 @@ void printlist(Fifo list) {
     node next_node;
     printf("\n");
     for(node n = list->head; n != NULL; n = next_node) {
-        printf("%p, ", n->data);
+        printf("%p: %d, ", n, n->data? *(int*)(n->data) : -1);
         next_node = n->next;
     }
+    printf("\n");
+    printf("\n");
 }
 
 node get_head(Fifo list) { return list? list->head : NULL; }
