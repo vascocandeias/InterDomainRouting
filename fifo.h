@@ -22,6 +22,5 @@ void delete_fifo(Fifo);
 FifoNode get_head(Fifo);
 Item get_data(FifoNode);
 FifoNode next(FifoNode);
-void printlist(Fifo);
 
 #endif

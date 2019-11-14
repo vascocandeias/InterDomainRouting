@@ -6,9 +6,9 @@
 #include "fifo.h"
 #include "graph.h"
 
-double clients;
-double peers;
-double providers;
+float clients;
+float peers;
+float providers;
 int sum = 0;
 
 typedef struct Node {
@@ -59,42 +59,36 @@ bool has_edges(node n){ return n? n->edges[3] != NULL && n->edges[1] != NULL && 
 
 void process(node n, Fifo * lists, int cur_node, int list_num) {
 
-    Fifo edge = NULL;
+    Fifo list = NULL;
     FifoNode head = NULL;
 
     n->cur_node = cur_node;
-    char r = 'a';
-    if(n->type == 3) {
+    // r = 0
+    if(n->type == 3)
         clients += 1;
-        r = 'c';
-    }
-    else if(n->type == 2) {
+        // r = "c"
+    else if(n->type == 2)
         peers += 1;
-        r = 'p';
-    }
-    else if(n->type == 1) {
+        // r = "p"
+    else if(n->type == 1)
         providers += 1;
-        r = 'v';
-    }
-
-    // printf("%d %c %d\n", n->id, r, n->parent);
+        // r = "pv"
+    // printf(n->id, r, n->parent)
 
     n->type = 0;
+    for(int i = 1; i < 4; i++){
+        list = n->edges[i];
 
-    if(list_num != 3) return;
-
-    for(int i = 2; i < 4; i++){
-        edge = n->edges[i];
-
-        for(FifoNode aux = get_head(edge); aux != NULL; aux = next(aux)) {
+        for(FifoNode aux = get_head(list); aux != NULL; aux = next(aux)) {
             head = get_data(aux);
             if(head->cur_node < cur_node) {
-                // if((head->type == 0 || head->type < i) && i != 1) {
-                if(head->type < i) {
-                    head->parent = n->id;
-                    // head->hops = n->hops + 1;
-                    head->type = i;
-                    lists[i - 1] = append(lists[i - 1], head);
+                if(list_num == 3) {
+                    if((head->type == 0 || head->type < i) && i != 1) {
+                        head->parent = n->id;
+                        // head->hops = n->hops + 1;
+                        head->type = i;
+                        lists[i - 1] = append(lists[i - 1], head);
+                    }
                 }
             }
         }
@@ -113,12 +107,11 @@ void _dijkstra(node n, int cur_node) {
 
     lists[2] = append(lists[2], n);
 
-    for(int i = 2; i >= 1; i--) {
+    for(int i = 2; i >= 0; i--) {
         aux = lists[i];
-        for(node auxnode = pop(aux); auxnode != NULL; auxnode = pop(aux)) {
+        for(node auxnode = pop(aux); auxnode != NULL; auxnode = pop(aux)){
             if(auxnode->cur_node < cur_node)
-                process(auxnode, lists, cur_node, i + 1);
-        }
+                process(auxnode, lists, cur_node, i + 1);}
     }
 
     for(int i = 0; i < 3; i++)
@@ -127,55 +120,28 @@ void _dijkstra(node n, int cur_node) {
 
 void dijkstra(Graph graph) {
 
-        // int n = MAX_LENGTH-1;
+        _dijkstra(graph->data[8232], 8232);
 
-        // _dijkstra(graph->data[n-1], n-1);
-        // _dijkstra(graph->data[n], n);
+        // clock_t t0 = clock();
+        // node n;
 
-        clock_t t0 = clock(), begin = t0;
-        node n;
-        Fifo lists[3], aux;
+        // for(int i = 0; i < MAX_LENGTH; i++) {
+        //     n = graph->data[i];
+        //     if(n != NULL)
+        //         _dijkstra(n, i);
+        //     if(i % 500 == 0) {
+        //         printf("%d %f\n", i, (float) (clock() - t0) / CLOCKS_PER_SEC);
+        //         t0 = clock();
+        //     }
+        // }
 
-        for(int i = 0; i < 3; i++)
-            lists[i] = NULL;
-
-        for(int cur_node = 0; cur_node < MAX_LENGTH; cur_node++) {
-            n = graph->data[cur_node];
-            if(!n)
-                continue;
-
-            lists[2] = append(lists[2], n);
-
-            for(int i = 2; i >= 1; i--) {
-                aux = lists[i];
-                for(node auxnode = pop(aux); auxnode != NULL; auxnode = pop(aux)) {
-                    if(auxnode->cur_node < cur_node)
-                        process(auxnode, lists, cur_node, i + 1);}
-            }
-
-            // if(i % 500 == 0) {
-            //     // printf("%d %f\n", i, (float) (clock() - t0) / CLOCKS_PER_SEC);
-            //     // t0 = clock();        // printf("Elapsed time: %f\n", (float) (clock() - t0) / CLOCKS_PER_SEC);
-            //     // printf("%d\n", i);
-            //     // float total_connections = graph->total_nodes*(graph->total_nodes - 1);
-            //     // providers = total_connections - peers - clients;
-            //     // printf("Peers: %f\n", peers/total_connections*100);
-            //     // printf("Clients: %f\n", clients/total_connections*100);
-            //     // printf("Peers: %f\n", peers);
-            //     // printf("Clients: %f\n", clients);
-            // }
-        }
-
-        // printf("%d %f\n", MAX_LENGTH, (float) (clock() - t0) / CLOCKS_PER_SEC);
-        printf("Elapsed time: %f\n", (float) (clock() - begin) / CLOCKS_PER_SEC);
+        // printf("Elapsed time: %f\n", (float) (clock() - t0) / CLOCKS_PER_SEC);
         printf("\nStats:\n");
-        double total_connections = graph->total_nodes*(graph->total_nodes - 1);
+        float total_connections = graph->total_nodes*(graph->total_nodes - 1);
         providers = total_connections - peers - clients;
         printf("Providers: %f\n", providers/total_connections*100);
         printf("Peers: %f\n", peers/total_connections*100);
         printf("Clients: %f\n", clients/total_connections*100);
-        for(int i = 0; i < 3; i++)
-            delete_fifo(lists[i]);
 }
 
 
@@ -203,17 +169,15 @@ Graph new_graph(char * filename) {
         if(!graph->data[tail]) {
             graph->data[tail] = new_node();
             graph->total_nodes++;
-            graph->data[tail]->id = tail;
         }
         if(!graph->data[head]) {
             graph->data[head] = new_node();
             graph->total_nodes++;
-            graph->data[head]->id = head;
         }
 
         insert_edge(graph->data[tail], graph->data[head], type);
     }
-    printf("Nodes: %d\n", graph->total_nodes);
+
     fclose(file);
 
     return graph;

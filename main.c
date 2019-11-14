@@ -4,9 +4,9 @@
 #include "fifo.h"
 #include "graph.h"
 
-extern double clients;
-extern double peers;
-extern double providers;
+extern float clients;
+extern float peers;
+extern float providers;
 
 int main(int argc, char ** argv){
 

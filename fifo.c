@@ -27,29 +27,20 @@ static node new_node(Item data) {
 
 Fifo append(Fifo list, Item data) {
 
+    node n = new_node(data);
+
     if(!list) {
         list = (Fifo) malloc(sizeof(struct Fifo));
         if(!list) exit(0);
         list->head = NULL;
-        list->tail = NULL;
     }
-
-    if(list->tail && list->tail->next) {
-        list->tail->next->data = data;
-        list->tail = list->tail->next;
-        return list;
-    }
-
-    node n = new_node(data);
-
-    if(!list->head) 
+    
+    if(!list->head)
         list->head = n;
-    else 
+    else
         list->tail->next = n;
- 
-    list->tail = n;
 
-    printf("%p\n", n);
+    list->tail = n;
 
     return list;
 }
@@ -62,40 +53,17 @@ Item pop(Fifo list) {
     node head = list->head;
     Item data = head->data;
 
-    if(!list->head->next)
-        list->head = head;
-    else
-        list->head = head->next;
-    head->data = NULL;
-    head->next = list->tail->next;
-    list->tail->next = head;
-    list->tail = head;
-    // free(head);
+    list->head = head->next;
+    free(head);
     return data;
 }
 
 void delete_fifo(Fifo list){
-    node next_node;
-    // for(Item aux = pop(list); aux != NULL; aux = pop(list));
-    if(!list)
-        return;
-        
-    for(node n = list->head; n != NULL; n = next_node){
-        next_node = n->next;
-        free(n);
-    }
+
+    for(Item aux = pop(list); aux != NULL; aux = pop(list));
 
     if(list)
         free(list);
-}
-
-void printlist(Fifo list) {
-    node next_node;
-    printf("\n");
-    for(node n = list->head; n != NULL; n = next_node) {
-        printf("%p, ", n->data);
-        next_node = n->next;
-    }
 }
 
 node get_head(Fifo list) { return list? list->head : NULL; }
