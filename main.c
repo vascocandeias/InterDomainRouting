@@ -10,13 +10,58 @@ extern double providers;
 
 int main(int argc, char ** argv){
 
+    int choice = 0, error = 0;
+
     if(argc < 2) {
         printf("run main input_file\n");
         exit(0);
     }
 
     Graph graph = new_graph(argv[1]); 
-    dijkstra(graph);
+    if(!graph) {
+        printf("There was an error reading the input file. Try again\n");
+        exit(0);
+    }
+
+    if(!check_connectivity(graph))
+        printf("The graph is not comercially connected\n");
+
+    if(!check_cycles(graph))
+        printf("The graph has client cycles\n");
+    do
+    {
+        printf("\nChoose and option\n\n");
+        printf("1. Get types of routes\n");
+        printf("2. Get number of hops in commercial network without finding routes first\n");
+        printf("3. Get number of hops in commercial network by finding routes first\n");
+        printf("4. Get number of hops in non commercial network\n");
+        printf("5. Exit\n");
+        error = scanf("%d",&choice);
+
+        if(error != 1) choice = 0;
+        
+        switch (choice) {
+            case 1:
+                dijkstra(graph, CLIENT, PEER, process, print_percentages);
+                dijkstra(graph, CLIENT, PROVIDER, hops_process, print_percentages);
+                break;
+            case 2:
+                dijkstra(graph, CLIENT, PROVIDER, hops_process, print_hops);
+                // n_hops(graph);
+                break;
+            case 3:
+                break;
+            case 4:
+                n_bfs(graph);
+                break;
+            case 5: break;
+            default:
+                printf("Invalid option\n");
+                break;
+        } 
+    } while (choice != 5);
+
+
     delete_graph(graph);
     return 0;
 }

@@ -17,18 +17,26 @@
 #include "fifo.h"
 
 #define MAX_LENGTH 65536
-// #define MAX_LENGTH 20
 
+typedef enum {NONE, PROVIDER, PEER, CLIENT} route;
 typedef struct Node * GraphNode;
 typedef struct Graph * Graph;
 
 Graph new_graph(char *);
 void insert_edge(GraphNode, GraphNode, int); 
 void delete_node(GraphNode);
-bool has_edges(GraphNode);
-void process(GraphNode, Fifo *, int, int);
+void process(GraphNode, Fifo *, int);
 void delete_graph(Graph);
-void _dijkstra(GraphNode, int);
-void dijkstra(Graph);
+void dijkstra(Graph, route, route, void(*)(), void(*)());
+void print_percentages(Graph);
+void print_hops(Graph, int *);
+void n_bfs(Graph graph);
+void bfs(GraphNode, Fifo, int, int *);
+void n_hops(Graph);
+void hops_process(GraphNode, Fifo *, int, int *);
+bool check_connectivity(Graph);
+void reset_cur_nodes(Graph);
+bool check_cycles(Graph);
+bool dfs(Graph, GraphNode, int, int);
 
 #endif

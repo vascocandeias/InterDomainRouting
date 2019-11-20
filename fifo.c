@@ -119,7 +119,7 @@ void printlist(Fifo list) {
     node next_node;
     printf("\n");
     for(node n = list->head; n != NULL; n = next_node) {
-        printf("%p: %d, ", n, n->data? *(int*)(n->data) : -1);
+        printf("%p: %d, ", (void *) n, n->data? *(int*)(n->data) : -1);
         next_node = n->next;
     }
     printf("\n");
