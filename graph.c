@@ -189,11 +189,91 @@ void print_hops(Graph graph, int * hops) {
     }
 }
 
+
+void dijkstra_2(Graph graph, route up_bound, route low_bound, void (*process_node)(Node, Fifo *, int, int*), void (*print)(Graph, int *)) {
+
+    clock_t t0 = clock(), begin = t0;
+    Node n;
+    Fifo lists[6], aux;
+    int hops[MAX_LENGTH] = {0};
+    int percentage = graph->total_nodes / 10, i = 0;
+
+    reset_cur_nodes(graph);
+
+    printf("\rLoading:  0%%");
+    fflush(stdout);
+
+    for(int i = 0; i < 6; ++i)
+        lists[i] = NULL;
+
+    providers = clients = peers = connections = 0;
+
+    for(int cur_node = 0; cur_node < MAX_LENGTH; cur_node++) {
+        if(!(n = graph->data[cur_node]))
+            continue;
+        
+                // printf("\nNode %d\n", i);
+        i++;
+
+        if(cur_node >= percentage) {
+            printf("\rLoading: %2d%%", i * 100 /graph->total_nodes);
+            fflush(stdout);
+            percentage += graph->total_nodes / 10;
+        }
+
+        lists[CLIENT] = append(lists[CLIENT], n);
+
+        for(int i = up_bound; i >= low_bound + 1; --i) {
+            aux = lists[i];
+            for(Node auxnode = pop(aux); auxnode != NULL; auxnode = pop(aux)) {
+                if(auxnode->cur_node < cur_node)
+                    process_node(auxnode, lists, cur_node, hops);
+            }
+        }
+
+        for(Node auxnode = get_min(lists[PROVIDER], lists[4], lists[5]); auxnode != NULL; auxnode = get_min(lists[PROVIDER], lists[4], lists[5]))
+            if(auxnode->cur_node < cur_node)
+                process_node(auxnode, lists, cur_node, hops);
+    }
+
+    printf("\rLoading: 100%%\n");
+
+    print(graph, hops);
+
+    printf("\nElapsed time: %f\n", (float) (clock() - begin) / CLOCKS_PER_SEC);
+
+    for(int i = 0; i < 4; i++)
+        delete_fifo(lists[i]);
+}
+
+Node get_min(Fifo fifo1, Fifo fifo2, Fifo fifo3) {
+    Node node1 = get_data(get_head(fifo1));
+    Node node2 = get_data(get_head(fifo2));
+    Node node3 = get_data(get_head(fifo3));
+
+    // fifo1 should be the last fifo to be emptied
+    if(!node1) return NULL;
+
+    if(node2) {
+        if(node3) { // no fifo is empty
+            if(node1->hops < node2->hops && node1->hops < node3->hops)
+                return pop(fifo1);
+            return node2->hops < node3->hops ? pop(fifo2) : pop(fifo3);
+        }
+        return node2->hops < node1->hops ? pop(fifo2) : pop(fifo1);
+    } else {
+        if(node3)
+            return node1->hops < node3->hops ? pop(fifo1) : pop(fifo3); 
+        return pop(fifo1);
+    }
+}
+
 void hops_process(Node n, Fifo * lists, int cur_node, int * hops) {
 
     Fifo edge = NULL;
     FifoNode head = NULL;
-    route type = n->type, up_bound, low_bound;
+    route type = n->type, up_bound, low_bound = PROVIDER;
+    Fifo aux_lists[4] = {lists[NONE], lists[PROVIDER], lists[PEER], lists[CLIENT]};
 
     n->cur_node = cur_node;
     hops[n->hops]++;
@@ -217,9 +297,12 @@ void hops_process(Node n, Fifo * lists, int cur_node, int * hops) {
 
 	if(type == CLIENT || type == NONE) {
         up_bound = CLIENT;
-        low_bound = PROVIDER;
-    } else
-        up_bound = low_bound = PROVIDER;
+        if(type == CLIENT) aux_lists[PROVIDER] = lists[4];
+    } else {
+        up_bound = PROVIDER;
+        if(type == PEER)
+            aux_lists[PROVIDER] = lists[5];
+    }
     
     for(int i = up_bound; i >= low_bound; --i){
         edge = n->edges[i];

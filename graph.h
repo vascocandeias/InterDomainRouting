@@ -28,6 +28,8 @@ void delete_node(GraphNode);
 void process(GraphNode, Fifo *, int);
 void delete_graph(Graph);
 void dijkstra(Graph, route, route, void(*)(), void(*)());
+void dijkstra_2(Graph, route, route, void(*)(), void(*)());
+GraphNode get_min(Fifo fifo1, Fifo fifo2, Fifo fifo3);
 void print_percentages(Graph);
 void print_hops(Graph, int *);
 void n_bfs(Graph graph);

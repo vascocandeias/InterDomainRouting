@@ -47,7 +47,7 @@ int main(int argc, char ** argv){
                 else dijkstra(graph, CLIENT, PROVIDER, hops_process, print_percentages);
                 break;
             case 2:
-                dijkstra(graph, CLIENT, PROVIDER, hops_process, print_hops);
+                dijkstra_2(graph, CLIENT, PROVIDER, hops_process, print_hops);
                 break;
             case 3:
                 break;
