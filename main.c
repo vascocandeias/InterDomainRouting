@@ -23,8 +23,9 @@ int main(int argc, char ** argv){
         exit(0);
     }
 
-    if(!check_connectivity(graph))
-        printf("The graph is not comercially connected\n");
+    bool connected = check_connectivity(graph);
+    if(!connected)
+        printf("The graph is not comercially connected. Option 1 might be slower\n");
 
     if(!check_cycles(graph))
         printf("The graph has client cycles\n");
@@ -42,12 +43,11 @@ int main(int argc, char ** argv){
         
         switch (choice) {
             case 1:
-                dijkstra(graph, CLIENT, PEER, process, print_percentages);
-                dijkstra(graph, CLIENT, PROVIDER, hops_process, print_percentages);
+                if(connected) dijkstra(graph, CLIENT, PEER, process, print_percentages);
+                else dijkstra(graph, CLIENT, PROVIDER, hops_process, print_percentages);
                 break;
             case 2:
                 dijkstra(graph, CLIENT, PROVIDER, hops_process, print_hops);
-                // n_hops(graph);
                 break;
             case 3:
                 break;

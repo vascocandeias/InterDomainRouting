@@ -32,7 +32,6 @@ void print_percentages(Graph);
 void print_hops(Graph, int *);
 void n_bfs(Graph graph);
 void bfs(GraphNode, Fifo, int, int *);
-void n_hops(Graph);
 void hops_process(GraphNode, Fifo *, int, int *);
 bool check_connectivity(Graph);
 void reset_cur_nodes(Graph);
