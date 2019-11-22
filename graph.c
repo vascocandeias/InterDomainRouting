@@ -212,9 +212,8 @@ void dijkstra_2(Graph graph, route up_bound, route low_bound, void (*process_nod
         if(!(n = graph->data[cur_node]))
             continue;
         
-                // printf("\nNode %d\n", i);
         i++;
-
+                // printf("\nNode %d\n", i);
         if(cur_node >= percentage) {
             printf("\rLoading: %2d%%", i * 100 /graph->total_nodes);
             fflush(stdout);
@@ -231,9 +230,11 @@ void dijkstra_2(Graph graph, route up_bound, route low_bound, void (*process_nod
             }
         }
 
-        for(Node auxnode = get_min(lists[PROVIDER], lists[4], lists[5]); auxnode != NULL; auxnode = get_min(lists[PROVIDER], lists[4], lists[5]))
+        for(Node auxnode = get_min(lists[PROVIDER], lists[4], lists[5]); auxnode != NULL; auxnode = get_min(lists[PROVIDER], lists[4], lists[5])) {
+            // printf("Provider: %d\n", auxnode->id);
             if(auxnode->cur_node < cur_node)
                 process_node(auxnode, lists, cur_node, hops);
+        }
     }
 
     printf("\rLoading: 100%%\n");
@@ -251,8 +252,14 @@ Node get_min(Fifo fifo1, Fifo fifo2, Fifo fifo3) {
     Node node2 = get_data(get_head(fifo2));
     Node node3 = get_data(get_head(fifo3));
 
-    // fifo1 should be the last fifo to be emptied
-    if(!node1) return NULL;
+    if(!node1) {
+        if(node2) {
+            if(node3)
+                return node2->hops < node3->hops ? pop(fifo2) : pop(fifo3);
+            return pop(fifo2);
+        }
+        return pop(fifo3);
+    }
 
     if(node2) {
         if(node3) { // no fifo is empty
@@ -293,7 +300,7 @@ void hops_process(Node n, Fifo * lists, int cur_node, int * hops) {
             break;
     }
 
-    // printf("%d: route: %d hops: %d\n", n->id, type, n->hops);
+    // printf("\n%d: route: %d hops: %d\n", n->id, type, n->hops);
 
 	if(type == CLIENT || type == NONE) {
         up_bound = CLIENT;
@@ -308,20 +315,40 @@ void hops_process(Node n, Fifo * lists, int cur_node, int * hops) {
         edge = n->edges[i];
         for(FifoNode aux = get_head(edge); aux != NULL; aux = next(aux)) {
             head = get_data(aux);
+            // printf("Inserting: %d - %d\n", head->id, i);
             if(head->cur_node < cur_node) {
-                if(head->type < i) {
+                if(head->type < i || (head->type == PROVIDER && head->hops > n->hops + 1)) {
+                    // printf("Inserted\n");
                     head->parent = n->id;
                     head->hops = n->hops + 1;
                     head->type = i;
-                    lists[i] = append(lists[i], head);
-                } else if(up_bound == PROVIDER && head->hops > n->hops + 1) {
-                    head->parent = n->id;
-                    head->hops = n->hops + 1;
-                    head->type = i;               
+                    aux_lists[i] = append(aux_lists[i], head);
+                    // if(get_data(get_head(aux_lists[PROVIDER])))
+                    //     printf("List Head: %d\n", ((FifoNode) get_data(get_head(aux_lists[PROVIDER])))->id);
+                    // else
+                    // {
+                    //     printf("List Head: NULL\n");
+                    // }
+                    
                 }
+                // } else if(up_bound == PROVIDER && head->hops > n->hops + 1) {
+                //     head->parent = n->id;
+                //     head->hops = n->hops + 1;
+                //     head->type = i;               
+                // }
             }
         }
     }
+    lists[CLIENT] = aux_lists[CLIENT];
+    lists[PEER] = aux_lists[PEER];
+    if(type == CLIENT) lists[4] = aux_lists[PROVIDER];
+    else if(type == PEER) lists[5] = aux_lists[PROVIDER];
+    else lists[PROVIDER] = aux_lists[PROVIDER];
+
+    // printf("Lists:\n");
+    // printlist(lists[PROVIDER]);
+    // printlist(lists[4]);
+    // printlist(lists[5]);
 	n->hops = 0;
 }
 

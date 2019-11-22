@@ -117,6 +117,7 @@ void delete_fifo(Fifo list){
 
 void printlist(Fifo list) {
     node next_node;
+    if(!list) return;
     printf("\n");
     for(node n = list->head; n != NULL; n = next_node) {
         printf("%p: %d, ", (void *) n, n->data? *(int*)(n->data) : -1);
