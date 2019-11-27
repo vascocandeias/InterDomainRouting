@@ -35,7 +35,10 @@ int counter = 0;
 
 static Node new_node() {
 
-    Node n = (Node) malloc(sizeof(struct Node));
+    Node n;
+
+    if(!(n = (Node) malloc(sizeof(struct Node))))
+        return NULL;
 
     n->cur_node = -1;
     for(int i = 0; i < 4; i++) n->edges[i] = NULL;
@@ -430,30 +433,27 @@ Graph new_graph(char * filename) {
     int tail, head, type;
     Graph graph = NULL;
 
-    graph = (Graph) malloc(sizeof(struct Graph));
-    if(!graph) return NULL;
+    if(!(graph = (Graph) malloc(sizeof(struct Graph)))) return NULL;
+    if(!(graph->data = (Node *) malloc(MAX_LENGTH * sizeof(Node)))) return NULL;
 
-    graph->data = (Node *) malloc(MAX_LENGTH * sizeof(Node));
     for(int i = 0; i < MAX_LENGTH; i++)
         graph->data[i] = NULL;
 
     graph->total_nodes = 0;
     graph->tier1 = 0;
 
-    if(!(file = fopen (filename, "r"))) {
-        delete_graph(graph);
-        return NULL;
-    }
+    if(!(file = fopen (filename, "r"))) return NULL;
 
 	while(fscanf(file, "%d %d %d", &tail, &head, &type) == 3) {
 
         if(!graph->data[tail]) {
-            graph->data[tail] = new_node();
+            if(!(graph->data[tail] = new_node())) return NULL;
             graph->total_nodes++;
             graph->data[tail]->id = tail;
         }
+
         if(!graph->data[head]) {
-            graph->data[head] = new_node();
+            if(!(graph->data[head] = new_node())) return NULL;
             graph->total_nodes++;
             graph->data[head]->id = head;
         }
@@ -465,6 +465,7 @@ Graph new_graph(char * filename) {
 
         insert_edge(graph->data[tail], graph->data[head], type);
     }
+
     printf("\nNumber of nodes: %d\n", graph->total_nodes);
 	graph->tier1 = graph->total_nodes - graph->tier1;
     fclose(file);
@@ -531,6 +532,7 @@ bool dfs(Graph graph, Node n, int cur_node, int level){
 }
 
 void delete_graph(Graph graph) {
+    if(!graph) return;
     for(int i = 0; i < MAX_LENGTH; i++)
         delete_node(graph->data[i]);
     free(graph->data);

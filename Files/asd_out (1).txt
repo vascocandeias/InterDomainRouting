@@ -1,0 +1,103 @@
+S-1 D-0 Connection-2 Hops-1
+S-2 D-0 Connection-3 Hops-2
+S-3 D-0 Connection-3 Hops-3
+S-4 D-0 Connection-3 Hops-1
+S-5 D-0 Connection-3 Hops-1
+S-6 D-0 Connection-3 Hops-2
+S-7 D-0 Connection-3 Hops-3
+S-8 D-0 Connection-3 Hops-4
+S-0 D-1 Connection-2 Hops-1
+S-2 D-1 Connection-3 Hops-1
+S-3 D-1 Connection-3 Hops-2
+S-4 D-1 Connection-3 Hops-2
+S-5 D-1 Connection-3 Hops-2
+S-6 D-1 Connection-3 Hops-3
+S-7 D-1 Connection-3 Hops-4
+S-8 D-1 Connection-3 Hops-5
+S-0 D-2 Connection-2 Hops-2
+S-1 D-2 Connection-1 Hops-1
+S-3 D-2 Connection-3 Hops-1
+S-4 D-2 Connection-3 Hops-3
+S-5 D-2 Connection-3 Hops-3
+S-6 D-2 Connection-3 Hops-4
+S-7 D-2 Connection-3 Hops-5
+S-8 D-2 Connection-3 Hops-6
+S-0 D-3 Connection-1 Hops-5
+S-1 D-3 Connection-1 Hops-2
+S-2 D-3 Connection-1 Hops-1
+S-4 D-3 Connection-3 Hops-6
+S-5 D-3 Connection-1 Hops-4
+S-6 D-3 Connection-1 Hops-3
+S-7 D-3 Connection-1 Hops-2
+S-8 D-3 Connection-1 Hops-1
+S-0 D-4 Connection-1 Hops-1
+S-1 D-4 Connection-2 Hops-2
+S-2 D-4 Connection-3 Hops-3
+S-3 D-4 Connection-3 Hops-4
+S-5 D-4 Connection-3 Hops-2
+S-6 D-4 Connection-3 Hops-3
+S-7 D-4 Connection-3 Hops-4
+S-8 D-4 Connection-3 Hops-5
+S-0 D-5 Connection-1 Hops-1
+S-1 D-5 Connection-2 Hops-2
+S-2 D-5 Connection-3 Hops-3
+S-3 D-5 Connection-3 Hops-4
+S-4 D-5 Connection-3 Hops-2
+S-6 D-5 Connection-3 Hops-1
+S-7 D-5 Connection-3 Hops-2
+S-8 D-5 Connection-3 Hops-3
+S-0 D-6 Connection-1 Hops-2
+S-1 D-6 Connection-2 Hops-3
+S-2 D-6 Connection-3 Hops-4
+S-3 D-6 Connection-3 Hops-3
+S-4 D-6 Connection-3 Hops-3
+S-5 D-6 Connection-1 Hops-1
+S-7 D-6 Connection-3 Hops-1
+S-8 D-6 Connection-3 Hops-2
+S-0 D-7 Connection-1 Hops-3
+S-1 D-7 Connection-2 Hops-4
+S-2 D-7 Connection-3 Hops-5
+S-3 D-7 Connection-3 Hops-2
+S-4 D-7 Connection-3 Hops-4
+S-5 D-7 Connection-1 Hops-2
+S-6 D-7 Connection-1 Hops-1
+S-8 D-7 Connection-3 Hops-1
+S-0 D-8 Connection-1 Hops-4
+S-1 D-8 Connection-2 Hops-5
+S-2 D-8 Connection-3 Hops-6
+S-3 D-8 Connection-3 Hops-1
+S-4 D-8 Connection-3 Hops-5
+S-5 D-8 Connection-1 Hops-3
+S-6 D-8 Connection-1 Hops-2
+S-7 D-8 Connection-1 Hops-1
+#rotas por clientes - 19
+#rotas por pares - 8
+#rotas por fornecedores - 45
+#nós sem rotas - 0
+# de rotas - 72
+percentagem de rotas por clientes - 26.3889%
+percentagem de rotas por pares - 11.1111%
+percentagem de rotas por fornecedores - 62.5000%
+Probabilidade complementar cumulativa do comprimento das rotas comercialmente ótimas
+P(X>=6) = 4.166666508%
+#(X>=6) = 3
+P(X>=5) = 13.888889313%
+#(X>=5) = 10
+P(X>=4) = 29.166666031%
+#(X>=4) = 21
+P(X>=3) = 50.000000000%
+#(X>=3) = 36
+P(X>=2) = 75.000000000%
+#(X>=2) = 54
+P(X>=1) = 100.000000000%
+#(X>=1) = 72
+# de rotas - 72
+Probabilidade complementar cumulativa do comprimento de caminhos mais curtos
+P(X>=5) = 2.777777672%
+P(X>=4) = 19.444444656%
+P(X>=3) = 47.222221375%
+P(X>=2) = 75.000000000%
+P(X>=1) = 100.000000000%
+#nós sem rotas - 0
+# de nós - 9
+# total de rotas - 72

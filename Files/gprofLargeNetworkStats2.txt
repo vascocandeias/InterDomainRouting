@@ -1,0 +1,289 @@
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+  %   cumulative   self              self     total           
+ time   seconds   seconds    calls  Ks/call  Ks/call  name    
+ 51.00    781.25   781.25 1933712676     0.00     0.00  hops_process
+ 16.92   1040.51   259.25 1933853987     0.00     0.00  get_min
+  8.81   1175.42   134.91 2169593045     0.00     0.00  pop
+  6.46   1274.42    99.00 7759063052     0.00     0.00  get_head
+  6.19   1369.32    94.90 6077620099     0.00     0.00  get_data
+  5.03   1446.31    76.99        1     0.08     1.53  dijkstra_2
+  3.83   1504.93    58.62 2169707613     0.00     0.00  append
+  1.30   1524.83    19.90 276058138     0.00     0.00  next
+  0.43   1531.42     6.59                             printlist
+  0.07   1532.46     1.04   316556     0.00     0.00  new_node
+  0.05   1533.22     0.77                             n_bfs
+  0.01   1533.31     0.09   246490     0.00     0.00  insert_edge
+  0.00   1533.33     0.02   175900     0.00     0.00  delete_fifo
+  0.00   1533.35     0.02        2     0.00     0.00  reset_cur_nodes
+  0.00   1533.36     0.01    21911     0.00     0.00  dfs
+  0.00   1533.37     0.01        1     0.00     0.00  check_cycles
+  0.00   1533.38     0.01        1     0.00     0.00  new_graph
+  0.00   1533.38     0.00    65536     0.00     0.00  delete_node
+  0.00   1533.38     0.00    43974     0.00     0.00  new_node
+  0.00   1533.38     0.00        1     0.00     0.00  check_connectivity
+  0.00   1533.38     0.00        1     0.00     0.00  delete_graph
+  0.00   1533.38     0.00        1     0.00     0.00  print_hops
+
+ %         the percentage of the total running time of the
+time       program used by this function.
+
+cumulative a running sum of the number of seconds accounted
+ seconds   for by this function and those listed above it.
+
+ self      the number of seconds accounted for by this
+seconds    function alone.  This is the major sort for this
+           listing.
+
+calls      the number of times this function was invoked, if
+           this function is profiled, else blank.
+
+ self      the average number of milliseconds spent in this
+ms/call    function per call, if this function is profiled,
+	   else blank.
+
+ total     the average number of milliseconds spent in this
+ms/call    function and its descendents per call, if this
+	   function is profiled, else blank.
+
+name       the name of the function.  This is the minor sort
+           for this listing. The index shows the location of
+	   the function in the gprof listing. If the index is
+	   in parenthesis it shows where it would appear in
+	   the gprof listing if it were to be printed.
+
+Copyright (C) 2012-2017 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+		     Call graph (explanation follows)
+
+
+granularity: each sample hit covers 2 byte(s) for 0.00% of 1533.38 seconds
+
+index % time    self  children    called     name
+                                                 <spontaneous>
+[1]     99.5    0.00 1526.03                 main [1]
+               76.99 1448.88       1/1           dijkstra_2 [2]
+                0.01    0.10       1/1           new_graph [13]
+                0.01    0.03       1/1           check_cycles [15]
+                0.00    0.02       1/1           delete_graph [19]
+                0.00    0.00       1/1           check_connectivity [21]
+-----------------------------------------------
+               76.99 1448.88       1/1           main [1]
+[2]     99.5   76.99 1448.88       1         dijkstra_2 [2]
+              781.25  108.83 1933712676/1933712676     hops_process [3]
+              259.25  284.87 1933853987/1933853987     get_min [4]
+               14.66    0.00 235739058/2169593045     pop [5]
+                0.01    0.00       1/2           reset_cur_nodes [17]
+                0.00    0.00   43974/2169707613     append [8]
+                0.00    0.00       4/175900      delete_fifo [16]
+                0.00    0.00       1/1           print_hops [23]
+-----------------------------------------------
+              781.25  108.83 1933712676/1933712676     dijkstra_2 [2]
+[3]     58.0  781.25  108.83 1933712676         hops_process [3]
+               58.61    1.04 2169417149/2169707613     append [8]
+               24.98    0.00 1957457104/7759063052     get_head [6]
+               19.89    0.00 275972237/276058138     next [9]
+                4.31    0.00 275972237/6077620099     get_data [7]
+-----------------------------------------------
+              259.25  284.87 1933853987/1933853987     dijkstra_2 [2]
+[4]     35.5  259.25  284.87 1933853987         get_min [4]
+              120.25    0.00 1933853987/2169593045     pop [5]
+               90.59    0.00 5801561961/6077620099     get_data [7]
+               74.03    0.00 5801561961/7759063052     get_head [6]
+-----------------------------------------------
+               14.66    0.00 235739058/2169593045     dijkstra_2 [2]
+              120.25    0.00 1933853987/2169593045     get_min [4]
+[5]      8.8  134.91    0.00 2169593045         pop [5]
+-----------------------------------------------
+                0.00    0.00      13/7759063052     check_connectivity [21]
+                0.00    0.00      13/7759063052     check_cycles [15]
+                0.00    0.00   43961/7759063052     dfs [20]
+               24.98    0.00 1957457104/7759063052     hops_process [3]
+               74.03    0.00 5801561961/7759063052     get_min [4]
+[6]      6.5   99.00    0.00 7759063052         get_head [6]
+-----------------------------------------------
+                0.00    0.00     168/6077620099     check_connectivity [21]
+                0.00    0.00   21911/6077620099     check_cycles [15]
+                0.00    0.00   63822/6077620099     dfs [20]
+                4.31    0.00 275972237/6077620099     hops_process [3]
+               90.59    0.00 5801561961/6077620099     get_min [4]
+[7]      6.2   94.90    0.00 6077620099         get_data [7]
+-----------------------------------------------
+                0.00    0.00   43974/2169707613     dijkstra_2 [2]
+                0.01    0.00  246490/2169707613     insert_edge [14]
+               58.61    1.04 2169417149/2169707613     hops_process [3]
+[8]      3.9   58.62    1.04 2169707613         append [8]
+                1.04    0.00  316556/316556      new_node [11]
+-----------------------------------------------
+                0.00    0.00     168/276058138     check_connectivity [21]
+                0.00    0.00   21911/276058138     check_cycles [15]
+                0.00    0.00   63822/276058138     dfs [20]
+               19.89    0.00 275972237/276058138     hops_process [3]
+[9]      1.3   19.90    0.00 276058138         next [9]
+-----------------------------------------------
+                                                 <spontaneous>
+[10]     0.4    6.59    0.00                 printlist [10]
+-----------------------------------------------
+                1.04    0.00  316556/316556      append [8]
+[11]     0.1    1.04    0.00  316556         new_node [11]
+-----------------------------------------------
+                                                 <spontaneous>
+[12]     0.0    0.77    0.00                 n_bfs [12]
+-----------------------------------------------
+                0.01    0.10       1/1           main [1]
+[13]     0.0    0.01    0.10       1         new_graph [13]
+                0.09    0.01  246490/246490      insert_edge [14]
+                0.00    0.00   43974/43974       new_node [22]
+-----------------------------------------------
+                0.09    0.01  246490/246490      new_graph [13]
+[14]     0.0    0.09    0.01  246490         insert_edge [14]
+                0.01    0.00  246490/2169707613     append [8]
+-----------------------------------------------
+                0.01    0.03       1/1           main [1]
+[15]     0.0    0.01    0.03       1         check_cycles [15]
+                0.01    0.01   21911/21911       dfs [20]
+                0.01    0.00       1/2           reset_cur_nodes [17]
+                0.00    0.00   21911/276058138     next [9]
+                0.00    0.00   21911/6077620099     get_data [7]
+                0.00    0.00      13/7759063052     get_head [6]
+-----------------------------------------------
+                0.00    0.00       4/175900      dijkstra_2 [2]
+                0.02    0.00  175896/175900      delete_node [18]
+[16]     0.0    0.02    0.00  175900         delete_fifo [16]
+-----------------------------------------------
+                0.01    0.00       1/2           dijkstra_2 [2]
+                0.01    0.00       1/2           check_cycles [15]
+[17]     0.0    0.02    0.00       2         reset_cur_nodes [17]
+-----------------------------------------------
+                0.00    0.02   65536/65536       delete_graph [19]
+[18]     0.0    0.00    0.02   65536         delete_node [18]
+                0.02    0.00  175896/175900      delete_fifo [16]
+-----------------------------------------------
+                0.00    0.02       1/1           main [1]
+[19]     0.0    0.00    0.02       1         delete_graph [19]
+                0.00    0.02   65536/65536       delete_node [18]
+-----------------------------------------------
+                               63822             dfs [20]
+                0.01    0.01   21911/21911       check_cycles [15]
+[20]     0.0    0.01    0.01   21911+63822   dfs [20]
+                0.00    0.00   63822/276058138     next [9]
+                0.00    0.00   63822/6077620099     get_data [7]
+                0.00    0.00   43961/7759063052     get_head [6]
+                               63822             dfs [20]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[21]     0.0    0.00    0.00       1         check_connectivity [21]
+                0.00    0.00     168/276058138     next [9]
+                0.00    0.00     168/6077620099     get_data [7]
+                0.00    0.00      13/7759063052     get_head [6]
+-----------------------------------------------
+                0.00    0.00   43974/43974       new_graph [13]
+[22]     0.0    0.00    0.00   43974         new_node [22]
+-----------------------------------------------
+                0.00    0.00       1/1           dijkstra_2 [2]
+[23]     0.0    0.00    0.00       1         print_hops [23]
+-----------------------------------------------
+
+ This table describes the call tree of the program, and was sorted by
+ the total amount of time spent in each function and its children.
+
+ Each entry in this table consists of several lines.  The line with the
+ index number at the left hand margin lists the current function.
+ The lines above it list the functions that called this function,
+ and the lines below it list the functions this one called.
+ This line lists:
+     index	A unique number given to each element of the table.
+		Index numbers are sorted numerically.
+		The index number is printed next to every function name so
+		it is easier to look up where the function is in the table.
+
+     % time	This is the percentage of the `total' time that was spent
+		in this function and its children.  Note that due to
+		different viewpoints, functions excluded by options, etc,
+		these numbers will NOT add up to 100%.
+
+     self	This is the total amount of time spent in this function.
+
+     children	This is the total amount of time propagated into this
+		function by its children.
+
+     called	This is the number of times the function was called.
+		If the function called itself recursively, the number
+		only includes non-recursive calls, and is followed by
+		a `+' and the number of recursive calls.
+
+     name	The name of the current function.  The index number is
+		printed after it.  If the function is a member of a
+		cycle, the cycle number is printed between the
+		function's name and the index number.
+
+
+ For the function's parents, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the function into this parent.
+
+     children	This is the amount of time that was propagated from
+		the function's children into this parent.
+
+     called	This is the number of times this parent called the
+		function `/' the total number of times the function
+		was called.  Recursive calls to the function are not
+		included in the number after the `/'.
+
+     name	This is the name of the parent.  The parent's index
+		number is printed after it.  If the parent is a
+		member of a cycle, the cycle number is printed between
+		the name and the index number.
+
+ If the parents of the function cannot be determined, the word
+ `<spontaneous>' is printed in the `name' field, and all the other
+ fields are blank.
+
+ For the function's children, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the child into the function.
+
+     children	This is the amount of time that was propagated from the
+		child's children to the function.
+
+     called	This is the number of times the function called
+		this child `/' the total number of times the child
+		was called.  Recursive calls by the child are not
+		listed in the number after the `/'.
+
+     name	This is the name of the child.  The child's index
+		number is printed after it.  If the child is a
+		member of a cycle, the cycle number is printed
+		between the name and the index number.
+
+ If there are any cycles (circles) in the call graph, there is an
+ entry for the cycle-as-a-whole.  This entry shows who called the
+ cycle (as parents) and the members of the cycle (as children.)
+ The `+' recursive calls entry shows the number of function calls that
+ were internal to the cycle, and the calls entry for each member shows,
+ for that member, how many times it was called from other members of
+ the cycle.
+
+Copyright (C) 2012-2017 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+Index by function name
+
+   [8] append                  [7] get_data               [22] new_node
+  [21] check_connectivity      [6] get_head                [9] next
+  [15] check_cycles            [4] get_min                 [5] pop
+  [16] delete_fifo             [3] hops_process           [23] print_hops
+  [19] delete_graph           [14] insert_edge            [10] printlist
+  [18] delete_node            [12] n_bfs                  [17] reset_cur_nodes
+  [20] dfs                    [13] new_graph
+   [2] dijkstra_2             [11] new_node
